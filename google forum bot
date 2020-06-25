@@ -1,0 +1,55 @@
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import time
+import random
+import Resources
+from selenium.webdriver.support.select import Select
+
+driver = webdriver.Chrome(executable_path= Resources.driverChrome)
+driver.maximize_window()
+driver.get(Resources.linkTest)
+
+time.sleep(3)
+try:
+    email = driver.find_element_by_xpath("//input[@type='email']")
+    if email.is_displayed() & email.is_enabled():
+        email.send_keys(Resources.emailTest)
+except:
+    print("Email box was not found")
+
+containers = driver.find_elements_by_xpath("//div[@class ='freebirdFormviewerViewNumberedItemContainer']")
+sNoBoxes = driver.find_elements_by_xpath("//input[@type='text' ] ")
+
+
+for sNOBox in sNoBoxes:
+    sNOBox.send_keys("999")
+time.sleep(2)
+for container in containers:
+    radios = container.find_elements_by_xpath("//div[@class='appsMaterialWizToggleRadiogroupOffRadio exportOuterCircle']")
+    counter = 0
+    for radio in radios:
+        while counter < 1:
+            radio.click()
+            break
+    break
+
+time.sleep(2)
+
+
+for container in containers:
+
+    sNo = int(containers.index(container))
+    print("\n\n" + str(sNo) + "    " + container.text)
+
+
+button = driver.find_element_by_xpath("//span[contains(text(),'Submit')]")
+button.click()
+
+time.sleep(3)
+
+try:
+    viewScore = driver.find_element_by_xpath("//span[contains(text(),'View score')]").click()
+
+except:
+    pass
+
